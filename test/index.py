@@ -1,5 +1,3 @@
-#Tianya Chen 59359881, Lewis Liu 24427400, Jianyu Zheng 33062456, Kaiyi Ma 62838370
-
 from lxml import html
 from lxml.html.clean import Cleaner
 from math import log
