@@ -1,6 +1,6 @@
 import re
 import json
-import yaml
+import operator
 
 test = "machine learning a motherfucker"
 
@@ -9,6 +9,7 @@ class Search(object):
 	def __init__(self):
 		self.token = []
 		self.term2tf_idf = {}
+		self.docID2score = {}
 
 
 	def get_token(self, input):
@@ -31,9 +32,16 @@ class Search(object):
 			else:
 				self.term2tf_idf[token] = 0
 
+		for doclist in self.term2tf_idf.values():
+			if type(doclist) == dict:
+				for key in doclist:
+					if key.encode("utf-8") in self.docID2score:
+						self.docID2score[key.encode("utf-8")] += doclist[key]
+					else:
+						self.docID2score[key.encode("utf-8")] = doclist[key]
 
+		self.docID2score = sorted(self.docID2score.items(), key=operator.itemgetter(1),reverse=True)
 
-		return None
 
 	def load_data(self):
 		
@@ -51,7 +59,9 @@ if __name__ == "__main__":
 	search.get_token(test)
 	print(search.token)
 	search.calculate_tf_idf()
-	print(search.term2tf_idf)
+	print(search.docID2score[:11])
+
+
 
 
 
