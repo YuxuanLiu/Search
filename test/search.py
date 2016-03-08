@@ -10,6 +10,7 @@ class Search(object):
 		self.token = []
 		self.term2tf_idf = {}
 		self.docID2score = {}
+		self.docID2doc = {}
 
 
 	def get_token(self, input):
@@ -48,18 +49,25 @@ class Search(object):
 		with open('docID2doc.json', 'r') as f:
 			self.docID2doc =  json.load(f)
 
-		with open('term2termID.json', 'r') as f:
-			temp =  json.load(f)
+
+	def return_top10(self):
+		search.get_token(test)
+		search.calculate_tf_idf()
+		self.load_data()
+		result = []
+		for item in  search.docID2score[:11]:
+			result.append(self.docID2doc[item[0]].encode("utf-8"))
+		return result
+
 
 
 
 if __name__ == "__main__":
 
 	search = Search()
-	search.get_token(test)
-	print(search.token)
-	search.calculate_tf_idf()
-	print(search.docID2score[:11])
+	result = search.return_top10()
+	print( result )
+
 
 
 
