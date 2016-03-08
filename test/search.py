@@ -51,8 +51,7 @@ class Search(object):
 
 
 	def return_top10(self):
-		search.get_token(test)
-		search.calculate_tf_idf()
+		self.calculate_tf_idf()
 		self.load_data()
 		result = []
 		for item in  search.docID2score[:11]:
@@ -65,6 +64,7 @@ class Search(object):
 if __name__ == "__main__":
 
 	search = Search()
+	search.get_token(test)
 	result = search.return_top10()
 	print( result )
 
