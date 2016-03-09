@@ -13,8 +13,9 @@ class SearchEng(object):
 		self.docID2doc = {}
 
 
-	def get_token(self, input):
-		self.token = re.split("[^a-zA-Z0-9]+",input)
+	def get_token(self, inputs):
+		inputs = inputs.lower()
+		self.token = re.split("[^a-zA-Z0-9]+",inputs)
 		file_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'term2termID.json')
 		with open(file_name, 'r') as f:
 			temp =  json.load(f)
