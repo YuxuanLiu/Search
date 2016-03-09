@@ -1,11 +1,11 @@
 import re
 import json
 import operator
+import os
 
-test = "machine learning a motherfucker"
+test = "machine learning"
 
-
-class Search(object):
+class SearchEng(object):
 	def __init__(self):
 		self.token = []
 		self.term2tf_idf = {}
@@ -15,16 +15,18 @@ class Search(object):
 
 	def get_token(self, input):
 		self.token = re.split("[^a-zA-Z0-9]+",input)
-		with open('term2termID.json', 'r') as f:
+		file_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'term2termID.json')
+		with open(file_name, 'r') as f:
 			temp =  json.load(f)
-		for i in range(len(search.token)):
-			if search.token[i] in temp.keys():
-				search.token[i] = temp[search.token[i]]
+		for i in range(len(self.token)):
+			if self.token[i] in temp.keys():
+				self.token[i] = temp[self.token[i]]
 			else:
-				search.token[i] = None
+				self.token[i] = None
 
 	def calculate_tf_idf(self):
-		with open('postingLists.json', 'r') as f:
+		file_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'postingLists.json')
+		with open(file_name, 'r') as f:
 			temp =  json.load(f)
 
 		for token in self.token:
@@ -45,16 +47,17 @@ class Search(object):
 
 
 	def load_data(self):
-		
-		with open('docID2doc.json', 'r') as f:
+		file_name = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'docID2doc.json')
+		with open(file_name, 'r') as f:		
 			self.docID2doc =  json.load(f)
 
 
-	def return_top10(self):
+	def return_top10(self, inputs):
+		self.get_token(inputs)
 		self.calculate_tf_idf()
 		self.load_data()
 		result = []
-		for item in  search.docID2score[:11]:
+		for item in  self.docID2score[:11]:
 			result.append(self.docID2doc[item[0]].encode("utf-8"))
 		return result
 
@@ -63,9 +66,8 @@ class Search(object):
 
 if __name__ == "__main__":
 
-	search = Search()
-	search.get_token(test)
-	result = search.return_top10()
+	search = SearchEng()
+	result = search.return_top10(test)
 	print( result )
 
 
